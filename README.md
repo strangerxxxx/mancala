@@ -31,7 +31,7 @@ QuizKnock動画内のルールに準拠しています。
 
 ## その他
 
-html/CSS/JSは初心者なので。  
+html/CSS/JSは初心者なので正確に動く保証はできません。  
 何かあれば[@srn/@misskey.io](https://misskey.io/@srn)までお願いします。  
 
 ## Bootstrapのライセンス
