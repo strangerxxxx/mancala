@@ -1,8 +1,6 @@
 function buttonClicked(index) {
-  //   alert(index + "ボタンがクリックされました！");
   var element = document.getElementById("box-" + index);
   number = element.textContent;
-  //   alert(number);
   document.getElementById("box-" + index).textContent = 0;
   while (number > 0) {
     index = (index + 1) % 8;
@@ -23,8 +21,6 @@ function buttonClicked(index) {
 function changeTurn() {
   handtext = document.getElementById("hand").textContent;
   const isFirst = handtext == "先手番";
-  // alert(handtext);
-  // alert(isFirst);
   for (let i = 0; i < 3; i++) {
     box = document.getElementById("box-" + i);
     button = document.getElementById("button-" + i);
@@ -103,20 +99,10 @@ function scoreCheck() {
   var hash = 0;
   for (let i = 0; i < 3; i++) {
     box = document.getElementById("box-" + i);
-    // alert(
-    //   i + "," + box.textContent + "," + Number(box.textContent) * 2 ** (i * 8)
-    // );
     hash += Number(box.textContent) * 2 ** (i * 8);
   }
   for (let i = 4; i < 7; i++) {
     box = document.getElementById("box-" + i);
-    // alert(
-    //   i +
-    //     "," +
-    //     box.textContent +
-    //     "," +
-    //     Number(box.textContent) * 2 ** ((i - 1) * 8)
-    // );
     hash += Number(box.textContent) * 2 ** ((i - 1) * 8);
   }
   handtext = document.getElementById("hand").textContent;
@@ -124,7 +110,6 @@ function scoreCheck() {
   if (isFirst) {
     hash += 1 * 2 ** 48;
   }
-  // alert(hash + ", " + boardhash[hash]);
   const arr = ["A", "B", "C", "", "D", "E", "F"];
   document.getElementById("score").textContent = "評価値 " + boardhash[hash][0];
   document.getElementById("recommend").textContent =
