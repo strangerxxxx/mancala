@@ -73,7 +73,7 @@ function winCheck() {
   }
   if (won) {
     document.getElementById("hand").textContent = "先手勝利";
-    document.getElementById("score").textContent = "評価値 30000";
+    document.getElementById("score").textContent = "0手で先手勝利";
     document.getElementById("recommend").textContent = "推奨手 -";
     allDisabled();
     return true;
@@ -88,7 +88,7 @@ function winCheck() {
   }
   if (won) {
     document.getElementById("hand").textContent = "後手勝利";
-    document.getElementById("score").textContent = "評価値 -30000";
+    document.getElementById("score").textContent = "0手で後手勝利";
     document.getElementById("recommend").textContent = "推奨手 -";
     allDisabled();
     return true;
@@ -111,7 +111,10 @@ function scoreCheck() {
     hash += 1 * 2 ** 48;
   }
   const arr = ["A", "B", "C", "", "D", "E", "F"];
-  document.getElementById("score").textContent = "評価値 " + boardhash[hash][0];
+  const score = Number(boardhash[hash][0]);
+  const winner = "手で" + (score > 0 ? "先手勝利" : "後手勝利");
+  const remain = 30000 - Math.abs(score);
+  document.getElementById("score").textContent = remain + winner;
   document.getElementById("recommend").textContent =
     "推奨手 " + arr[boardhash[hash][1]];
 }
@@ -135,6 +138,6 @@ function reset() {
   document.getElementById("box-3").textContent = 0;
   document.getElementById("box-7").textContent = 0;
   document.getElementById("hand").textContent = "先手番";
-  document.getElementById("score").textContent = "評価値 29981";
+  document.getElementById("score").textContent = "19手で先手勝利";
   document.getElementById("recommend").textContent = "推奨手 A";
 }
