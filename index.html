@@ -146,14 +146,25 @@
             <li class="list-group-item" id="hand">先手番</li>
             <li class="list-group-item" id="score">19手で先手勝利</li>
             <li class="list-group-item" id="recommend">推奨手 A</li>
-            <button
-              type="button"
-              class="btn btn-info text-center mx-auto mt-2"
-              id="button-reset"
-              onclick="reset()"
-            >
-              リセット
-            </button>
+            <div class="col mx-auto mt-2">
+              <button
+                type="button"
+                class="btn btn-info text-center"
+                id="button-reverse"
+                onclick="reverse()"
+                disabled
+              >
+                戻す
+              </button>
+              <button
+                type="button"
+                class="btn btn-info text-center"
+                id="button-reset"
+                onclick="reset()"
+              >
+                リセット
+              </button>
+            </div>
           </ul>
         </div>
       </div>
