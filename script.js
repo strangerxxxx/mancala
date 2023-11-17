@@ -1,4 +1,4 @@
-var history = [];
+var boardhistory = [[3, 3, 3, 0, 3, 3, 3, 0, true]];
 function getFirst() {
   return document.getElementById("hand").textContent == "先手番";
 }
@@ -24,6 +24,14 @@ function getNumber(index) {
 function setNumber(index, num) {
   document.getElementById("box-" + index).textContent = num;
 }
+function recordHistory() {
+  boardhistory.push([]);
+  for (let i = 0; i < 8; i++) {
+    boardhistory[boardhistory.length - 1].push(getNumber(i, boardhistory[i]));
+  }
+  boardhistory[boardhistory.length - 1].push(getFirst());
+  document.getElementById("button-reverse").disabled = false;
+}
 function buttonClicked(index) {
   var number = getNumber(index);
   setNumber(index, 0);
@@ -33,6 +41,7 @@ function buttonClicked(index) {
     number--;
   }
   if (winCheck()) {
+    recordHistory();
     return;
   }
   if (index % 4 != 3) {
@@ -41,6 +50,7 @@ function buttonClicked(index) {
     zeroCheck();
   }
   scoreCheck();
+  recordHistory();
 }
 function changeTurn() {
   const isFirst = getFirst();
@@ -158,4 +168,19 @@ function reset() {
   setNumber(7, 0);
   setFirst(true);
   scoreCheck();
+  boardhistory = [[3, 3, 3, 0, 3, 3, 3, 0, true]];
+  document.getElementById("button-reverse").disabled = true;
+}
+function reverse() {
+  boardhistory.pop();
+  const arr = boardhistory[boardhistory.length - 1];
+  for (let i = 0; i < 8; i++) {
+    setNumber(i, arr[i]);
+  }
+  setFirst(arr[8]);
+  zeroCheck();
+  scoreCheck();
+  if (boardhistory.length == 1) {
+    document.getElementById("button-reverse").disabled = true;
+  }
 }
