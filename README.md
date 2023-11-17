@@ -28,6 +28,12 @@ QuizKnock動画内のルールに準拠しています。
 具体的なコードは[mancala.cpp](https://github.com/strangerxxxx/mancala/blob/main/mancala.cpp)にあります。  
 仕組みを簡単に言えば盤面をハッシュ化して深さ優先探索しています。  
 
+## ToDo
+
+- たまに操作不能になるBug Fix
+- 元に戻す機能
+- 石やマスの数を可変にする
+
 ## その他
 
 html/CSS/JSは初心者なので正確に動く保証はできません。  
