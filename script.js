@@ -12,14 +12,24 @@ function setScore(remain, firstWin = true) {
   document.getElementById("score").textContent =
     remain + "手で" + (firstWin ? "先手" : "後手") + "勝利";
 }
+function setRecommend(txt) {
+  document.getElementById("recommend").textContent = "推奨手 " + txt;
+}
+function setDisabled(index, isDisable = true) {
+  document.getElementById("button-" + index).disabled = isDisable;
+}
+function getNumber(index) {
+  return Number(document.getElementById("box-" + index).textContent);
+}
+function setNumber(index, num) {
+  document.getElementById("box-" + index).textContent = num;
+}
 function buttonClicked(index) {
-  var element = document.getElementById("box-" + index);
-  number = element.textContent;
-  document.getElementById("box-" + index).textContent = 0;
+  var number = getNumber(index);
+  setNumber(index, 0);
   while (number > 0) {
     index = (index + 1) % 8;
-    document.getElementById("box-" + index).textContent =
-      Number(document.getElementById("box-" + index).textContent) + 1;
+    setNumber(index, getNumber(index) + 1);
     number--;
   }
   if (winCheck()) {
@@ -35,46 +45,43 @@ function buttonClicked(index) {
 function changeTurn() {
   const isFirst = getFirst();
   for (let i = 0; i < 3; i++) {
-    box = document.getElementById("box-" + i);
-    button = document.getElementById("button-" + i);
-    if (box.textContent == "0") {
-      button.disabled = true;
+    if (getNumber(i) == 0) {
+      setDisabled(i, true);
     } else {
-      button.disabled = isFirst;
+      setDisabled(i, isFirst);
     }
   }
   for (let i = 4; i < 7; i++) {
-    box = document.getElementById("box-" + i);
-    button = document.getElementById("button-" + i);
-    if (box.textContent == "0") {
-      button.disabled = true;
+    if (getNumber(i) == 0) {
+      setDisabled(i, true);
     } else {
-      button.disabled = !isFirst;
+      setDisabled(i, !isFirst);
     }
   }
   setFirst(!isFirst);
 }
 function zeroCheck() {
+  const isFirst = getFirst();
   for (let i = 0; i < 3; i++) {
-    box = document.getElementById("box-" + i);
-    button = document.getElementById("button-" + i);
-    if (box.textContent == "0") {
-      button.disabled = true;
+    if (!isFirst || getNumber(i) == 0) {
+      setDisabled(i, true);
+    } else {
+      setDisabled(i, false);
     }
   }
   for (let i = 4; i < 7; i++) {
-    box = document.getElementById("box-" + i);
-    button = document.getElementById("button-" + i);
-    if (box.textContent == "0") {
-      button.disabled = true;
+    if (isFirst || getNumber(i) == 0) {
+      setDisabled(i, true);
+    } else {
+      setDisabled(i, false);
     }
   }
 }
 function winCheck() {
   var won = true;
   for (let i = 0; i < 3; i++) {
-    box = document.getElementById("box-" + i);
-    if (box.textContent != "0") {
+    boxNumber = getNumber(i);
+    if (boxNumber != 0) {
       won = false;
       break;
     }
@@ -82,14 +89,14 @@ function winCheck() {
   if (won) {
     setTurn("先手勝利");
     setScore(0, true);
-    document.getElementById("recommend").textContent = "推奨手 -";
+    setRecommend("-");
     allDisabled();
     return true;
   }
   won = true;
   for (let i = 4; i < 7; i++) {
-    box = document.getElementById("box-" + i);
-    if (box.textContent != "0") {
+    boxNumber = getNumber(i);
+    if (boxNumber != 0) {
       won = false;
       break;
     }
@@ -97,7 +104,7 @@ function winCheck() {
   if (won) {
     setTurn("後手勝利");
     setScore(0, false);
-    document.getElementById("recommend").textContent = "推奨手 -";
+    setRecommend("-");
     allDisabled();
     return true;
   }
@@ -108,13 +115,11 @@ function getHash() {
   var mul = 1;
   const rate = 256;
   for (let i = 0; i < 3; i++) {
-    box = document.getElementById("box-" + i);
-    hash += Number(box.textContent) * mul;
+    hash += getNumber(i) * mul;
     mul *= rate;
   }
   for (let i = 4; i < 7; i++) {
-    box = document.getElementById("box-" + i);
-    hash += Number(box.textContent) * mul;
+    hash += getNumber(i) * mul;
     mul *= rate;
   }
   const isFirst = getFirst();
@@ -128,29 +133,29 @@ function scoreCheck() {
   const arr = ["A", "B", "C", "", "D", "E", "F"];
   const score = Number(boardhash[hash][0]);
   setScore(30000 - Math.abs(score), score > 0);
-  const recomend =
+  const recommend =
     Number(boardhash[hash][1]) >= 0 ? arr[boardhash[hash][1]] : "-";
-  document.getElementById("recommend").textContent = "推奨手 " + recomend;
+  setRecommend(recommend);
 }
 function allDisabled() {
   for (let i = 0; i < 3; i++) {
-    document.getElementById("button-" + i).disabled = true;
+    setDisabled(i, true);
   }
   for (let i = 4; i < 7; i++) {
-    document.getElementById("button-" + i).disabled = true;
+    setDisabled(i, true);
   }
 }
 function reset() {
   for (let i = 0; i < 3; i++) {
-    document.getElementById("button-" + i).disabled = false;
-    document.getElementById("box-" + i).textContent = 3;
+    setDisabled(i, false);
+    setNumber(i, 3);
   }
   for (let i = 4; i < 7; i++) {
-    document.getElementById("button-" + i).disabled = true;
-    document.getElementById("box-" + i).textContent = 3;
+    setDisabled(i, true);
+    setNumber(i, 3);
   }
-  document.getElementById("box-3").textContent = 0;
-  document.getElementById("box-7").textContent = 0;
+  setNumber(3, 0);
+  setNumber(7, 0);
   setFirst(true);
   scoreCheck();
 }
