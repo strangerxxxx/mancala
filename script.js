@@ -1,3 +1,17 @@
+var history = [];
+function getFirst() {
+  return document.getElementById("hand").textContent == "先手番";
+}
+function setTurn(str) {
+  document.getElementById("hand").textContent = str;
+}
+function setFirst(isFirst = true) {
+  setTurn(isFirst ? "先手番" : "後手番");
+}
+function setScore(remain, firstWin = true) {
+  document.getElementById("score").textContent =
+    remain + "手で" + (firstWin ? "先手" : "後手") + "勝利";
+}
 function buttonClicked(index) {
   var element = document.getElementById("box-" + index);
   number = element.textContent;
@@ -19,8 +33,7 @@ function buttonClicked(index) {
   scoreCheck();
 }
 function changeTurn() {
-  handtext = document.getElementById("hand").textContent;
-  const isFirst = handtext == "先手番";
+  const isFirst = getFirst();
   for (let i = 0; i < 3; i++) {
     box = document.getElementById("box-" + i);
     button = document.getElementById("button-" + i);
@@ -39,11 +52,7 @@ function changeTurn() {
       button.disabled = !isFirst;
     }
   }
-  if (isFirst) {
-    document.getElementById("hand").textContent = "後手番";
-  } else {
-    document.getElementById("hand").textContent = "先手番";
-  }
+  setFirst(!isFirst);
 }
 function zeroCheck() {
   for (let i = 0; i < 3; i++) {
@@ -62,7 +71,6 @@ function zeroCheck() {
   }
 }
 function winCheck() {
-  var hash = 0;
   var won = true;
   for (let i = 0; i < 3; i++) {
     box = document.getElementById("box-" + i);
@@ -72,8 +80,8 @@ function winCheck() {
     }
   }
   if (won) {
-    document.getElementById("hand").textContent = "先手勝利";
-    document.getElementById("score").textContent = "0手で先手勝利";
+    setTurn("先手勝利");
+    setScore(0, true);
     document.getElementById("recommend").textContent = "推奨手 -";
     allDisabled();
     return true;
@@ -87,36 +95,42 @@ function winCheck() {
     }
   }
   if (won) {
-    document.getElementById("hand").textContent = "後手勝利";
-    document.getElementById("score").textContent = "0手で後手勝利";
+    setTurn("後手勝利");
+    setScore(0, false);
     document.getElementById("recommend").textContent = "推奨手 -";
     allDisabled();
     return true;
   }
   return false;
 }
-function scoreCheck() {
+function getHash() {
   var hash = 0;
+  var mul = 1;
+  const rate = 256;
   for (let i = 0; i < 3; i++) {
     box = document.getElementById("box-" + i);
-    hash += Number(box.textContent) * 2 ** (i * 8);
+    hash += Number(box.textContent) * mul;
+    mul *= rate;
   }
   for (let i = 4; i < 7; i++) {
     box = document.getElementById("box-" + i);
-    hash += Number(box.textContent) * 2 ** ((i - 1) * 8);
+    hash += Number(box.textContent) * mul;
+    mul *= rate;
   }
-  handtext = document.getElementById("hand").textContent;
-  const isFirst = handtext == "先手番";
+  const isFirst = getFirst();
   if (isFirst) {
-    hash += 1 * 2 ** 48;
+    hash += mul;
   }
+  return hash;
+}
+function scoreCheck() {
+  const hash = getHash();
   const arr = ["A", "B", "C", "", "D", "E", "F"];
   const score = Number(boardhash[hash][0]);
-  const winner = "手で" + (score > 0 ? "先手勝利" : "後手勝利");
-  const remain = 30000 - Math.abs(score);
-  document.getElementById("score").textContent = remain + winner;
-  document.getElementById("recommend").textContent =
-    "推奨手 " + arr[boardhash[hash][1]];
+  setScore(30000 - Math.abs(score), score > 0);
+  const recomend =
+    Number(boardhash[hash][1]) >= 0 ? arr[boardhash[hash][1]] : "-";
+  document.getElementById("recommend").textContent = "推奨手 " + recomend;
 }
 function allDisabled() {
   for (let i = 0; i < 3; i++) {
@@ -137,7 +151,6 @@ function reset() {
   }
   document.getElementById("box-3").textContent = 0;
   document.getElementById("box-7").textContent = 0;
-  document.getElementById("hand").textContent = "先手番";
-  document.getElementById("score").textContent = "19手で先手勝利";
-  document.getElementById("recommend").textContent = "推奨手 A";
+  setFirst(true);
+  scoreCheck();
 }
