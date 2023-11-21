@@ -146,7 +146,7 @@
             <li class="list-group-item" id="hand">先手番</li>
             <li class="list-group-item" id="score">19手で先手勝利</li>
             <li class="list-group-item" id="recommend">推奨手 A</li>
-            <div class="col mx-auto mt-2">
+            <li class="list-group-item" id="reversebutton">
               <button
                 type="button"
                 class="btn btn-info text-center"
@@ -154,17 +154,39 @@
                 onclick="reverse()"
                 disabled
               >
-                戻す
+                1手戻す
               </button>
-              <button
-                type="button"
-                class="btn btn-info text-center"
-                id="button-reset"
-                onclick="reset()"
-              >
-                リセット
-              </button>
-            </div>
+            </li>
+            <li class="list-group-item" id="resetbutton">
+              <div class="col">
+                <div class="row">
+                  <td class="align-middle col-auto">初期配置数</td>
+                  <div class="col-auto">
+                    <div class="dropdown">
+                      <select
+                        class="form-select form-select-sm"
+                        id="init-pieces"
+                      >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-info text-center mt-1"
+                  id="button-reset"
+                  onclick="reset()"
+                >
+                  リセット
+                </button>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

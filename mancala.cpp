@@ -113,7 +113,7 @@ int main()
   ull n;
   cout << "Input stones : ";
   cin >> n;
-  assert(n * 6 <= 1 << bit_len);
+  assert(n * 6 < 1 << bit_len);
   ull init_board = 0;
   REP(i, 6)
   {

@@ -156,19 +156,20 @@ function allDisabled() {
   }
 }
 function reset() {
+  const pieces = Number(document.getElementById("init-pieces").value);
   for (let i = 0; i < 3; i++) {
     setDisabled(i, false);
-    setNumber(i, 3);
+    setNumber(i, pieces);
   }
   for (let i = 4; i < 7; i++) {
     setDisabled(i, true);
-    setNumber(i, 3);
+    setNumber(i, pieces);
   }
   setNumber(3, 0);
   setNumber(7, 0);
   setFirst(true);
   scoreCheck();
-  boardhistory = [[3, 3, 3, 0, 3, 3, 3, 0, true]];
+  boardhistory = [[pieces, pieces, pieces, 0, pieces, pieces, pieces, 0, true]];
   document.getElementById("button-reverse").disabled = true;
 }
 function reverse() {
