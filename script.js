@@ -185,3 +185,19 @@ function reverse() {
     document.getElementById("button-reverse").disabled = true;
   }
 }
+function changeScoreDisplay() {
+  if (document.getElementById("hidden-score-check").checked) {
+    document.getElementById("score").style.display = "none";
+    document.getElementById("recommend").style.display = "none";
+  } else {
+    document.getElementById("score").style.display = "block";
+    document.getElementById("recommend").style.display = "block";
+  }
+}
+window.addEventListener("load", function () {
+  let hiddencheckbox = document.getElementById("hidden-score-check");
+  changeScoreDisplay();
+  hiddencheckbox.addEventListener("change", () => {
+    changeScoreDisplay();
+  });
+});
