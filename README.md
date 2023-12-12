@@ -28,7 +28,9 @@ QuizKnock動画内のルールに準拠しています。
 ## 解析方法について
 
 具体的なコードは[mancala.cpp](https://github.com/strangerxxxx/mancala/blob/main/mancala.cpp)にあります。  
-仕組みを簡単に言えば盤面をハッシュ化して深さ優先探索しています。  
+仕組みを簡単に言えば盤面をハッシュ化[^2]して深さ優先探索しています。  
+
+[^2]:可逆変換なので正確にはハッシュ化ではない
 
 ## ToDo
 
